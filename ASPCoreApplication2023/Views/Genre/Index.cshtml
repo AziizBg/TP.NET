@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ASPCoreApplication2023.Models.Genre>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Genres</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @* quand on clique sur le nom d'un genre, il nous affiche les films de ce genre: l'action GenreMovies du
+            controlleur MovieController est appelé *@
+                @* asp-route-id est le paramètre de la méthode GenreMovies *@
+                <td>
+                    @* text-decoration none pour p *@
+                    <a asp-route-id="@item.Id" asp-action="GenreMovies" asp-controller="Movie"
+                        style="color:black; text-decoration:none">@Html.DisplayFor(modelItem => item.Name)</a>
+                </td>
+
+                <td>
+                    <a asp-route-id="@item.Id" asp-action="GenreMovies" asp-controller="Movie" class="btn btn-success">Show
+                        movies</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

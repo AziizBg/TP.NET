@@ -1,0 +1,25 @@
+﻿@model ASPCoreApplication2023.Models.MovieGenreViewModel
+
+
+@{
+    ViewData["Title"] = "GenreMovies";
+}
+
+@* view model has genre and movies *@
+<div class="d-flex align-items-center justify-content-between m-2">
+    <h1>
+        @Html.DisplayFor(model => Model.Genre.Name)
+    </h1>
+    <a asp-action="Index" asp-controller="Genre" class="btn btn-primary">Back to list</a>
+</div>
+
+<div class="m-2">
+    <ul>
+        @foreach (var movie in Model.Movies)
+        {
+            <li>
+                @movie.Name
+            </li>
+        }
+    </ul>
+</div>

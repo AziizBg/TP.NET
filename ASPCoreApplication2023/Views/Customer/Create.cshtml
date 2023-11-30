@@ -1,0 +1,55 @@
+﻿@model ASPCoreApplication2023.Models.Customer
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="membershiptypeid" class="control-label">Membership id</label>
+                <select asp-for="membershiptypeid" class="form-control" asp-items="ViewBag.member"></select>
+                @* <input asp-for="membershiptypeid" class="form-control"></input> *@
+                @* aspitems is used to populate the dropdownlist*@
+                @* aspitems expects a list of selectlistitem. our selectlistitem is a list of membership type object
+                that has id and name. the dropdownlist will display the name and the value will be the id*@
+                <span asp-validation-for="membershiptypeid" class="text-red"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    @if (ViewBag.errors != null)
+    {
+        <div class="text-red ml">
+            <ul>
+                @foreach (string error in ViewBag.errors)
+                {
+                    <li class="ml">@error</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+<div>
+    <a asp-action="Details">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

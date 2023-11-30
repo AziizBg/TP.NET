@@ -1,0 +1,14 @@
+@model ASPCoreApplication2023.Models.Customer
+
+<h1>Customer Details</h1>
+<br>
+@if (Model != null){
+<ul>
+    <li>@Model.Id</li>
+    <li>@Model.Name</li>
+
+    </ul>
+}else
+{
+    <p> Customer not found </p>
+}

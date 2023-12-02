@@ -10,6 +10,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
 
 // Register services with DI container
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<MovieRepository>();
+builder.Services.AddScoped<GenreRepository>();
+builder.Services.AddScoped<CustomerRepository>();
+
 
 var app = builder.Build();
 

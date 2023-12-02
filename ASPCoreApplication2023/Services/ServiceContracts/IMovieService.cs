@@ -6,6 +6,6 @@ public interface IMovieService
 
     public List<Movie> GetMoviesByGenreID(int genreId);
 
-    public List<Movie> GetMoviesSortedByReleaseDate();
+    public List<Movie> GetMoviesSortedByReleaseDateDescending();
 
 }

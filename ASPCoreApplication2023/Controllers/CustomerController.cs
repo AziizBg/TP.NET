@@ -8,22 +8,21 @@ namespace ASPCoreApplication2023.Controllers
 {
     public class CustomerController : Controller
     {
-        AppDbContext _appDbContext;
-        public CustomerController(AppDbContext context)
+        private readonly AppDbContext _appDbContext;
+        private readonly CustomerRepository _customerRepository;
+
+        public CustomerController(CustomerRepository customerRepository, AppDbContext _appDbContext)
         {
-            this._appDbContext = context;
+            _customerRepository = customerRepository;
         }
-        // GET: CustomerController
-        public ActionResult Index()
-        {
-            return View();
-        }
+
 
         // GET: CustomerController/Details/
         //list all customers
         public ActionResult Details()
         {
-            List<Customer> list = _appDbContext.Customers.Include(c => c.membershiptype).ToList();
+            // List<Customer> list = _appDbContext.Customers.Include(c => c.membershiptype).ToList();
+            List<Customer> list = _customerRepository.GetAllCustomers();
             return View(list);
         }
 
@@ -53,7 +52,7 @@ namespace ASPCoreApplication2023.Controllers
             // errors.Add("error 1");
             // errors.Add("error 2");
             // ViewBag.errors = errors;
-    
+
             ViewBag.errors = ModelState.Values
              .SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
 
@@ -62,51 +61,12 @@ namespace ASPCoreApplication2023.Controllers
                 return View();
             }
 
-            _appDbContext.Customers.Add(c);
-            _appDbContext.SaveChanges();
+            _customerRepository.CreateCustomer(c);
+            // _appDbContext.Customers.Add(c);
+            // _appDbContext.SaveChanges();
             return RedirectToAction(nameof(Details));
         }
 
-        // GET: CustomerController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: CustomerController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CustomerController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CustomerController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

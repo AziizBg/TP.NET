@@ -6,13 +6,18 @@ namespace ASPCoreApplication2023.Controllers
 {
     public class MovieController : Controller
     {
-        public readonly AppDbContext _appDbContext;
+        // public readonly AppDbContext _appDbContext;
         public readonly IMovieService _movieService;
+        public readonly GenreRepository _genreRepository;
+        public readonly MovieRepository _movieRepository;
+        
 
-        public MovieController(AppDbContext appDbContext, IMovieService movieService)
+        public MovieController(IMovieService movieService, MovieRepository movieRepository, GenreRepository genreRepository)
         {
-            _appDbContext = appDbContext;
+            // _appDbContext = appDbContext;
             _movieService = movieService;
+            _movieRepository = movieRepository;
+            _genreRepository = genreRepository;
         }
 
 
@@ -26,7 +31,8 @@ namespace ASPCoreApplication2023.Controllers
         //list all Movies
         public ActionResult Details()
         {
-            List<Movie> list = _appDbContext.Movies.Include(c => c.Genre).ToList();
+            // List<Movie> list = _appDbContext.Movies.Include(c => c.Genre).ToList();
+            List<Movie> list = _movieRepository.GetAllMovies();
             return View(list);
         }
 
@@ -67,8 +73,8 @@ namespace ASPCoreApplication2023.Controllers
                 c.PictureURL = "/" + fileName;
             }
 
-            _appDbContext.Movies.Add(c);
-            _appDbContext.SaveChanges();
+            _movieRepository.CreateMovie(c);
+
             return RedirectToAction(nameof(Details));
         }
 
@@ -83,7 +89,10 @@ namespace ASPCoreApplication2023.Controllers
         public IActionResult GenreMovies(int genreId)
         {
             List<Movie> movies = _movieService.GetMoviesByGenreID(genreId);
-            Genre genre = _appDbContext.Genres.Single(g => g.Id == genreId);
+
+            // Genre genre = _appDbContext.Genres.Single(g => g.Id == genreId);
+            Genre genre = _genreRepository.GetGenreById(genreId);
+
             MovieGenreViewModel viewModel = new MovieGenreViewModel(genre, movies);
 
             return View(viewModel);
@@ -92,7 +101,7 @@ namespace ASPCoreApplication2023.Controllers
         // get movies sorted by release date:
         public IActionResult SortedByReleaseDate()
         {
-            List<Movie> movies = _movieService.GetMoviesSortedByReleaseDate();
+            List<Movie> movies = _movieService.GetMoviesSortedByReleaseDateDescending();
             return View(movies);
         }
 

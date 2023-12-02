@@ -48,7 +48,7 @@ public class MovieRepository
     // desc
     public List<Movie> GetMoviesSortedByReleaseDateDescending()
     {
-        return _appDbContext.Movies.OrderByDescending(m => m.ReleaseDate).ToList();
+        return _appDbContext.Movies.Include(c => c.Genre).OrderByDescending(m => m.ReleaseDate).ToList();
     }
 
 
